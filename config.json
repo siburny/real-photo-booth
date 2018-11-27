@@ -1,0 +1,13 @@
+{
+	"startup": {
+		"fullscreen": true,
+		"width": 1440,
+		"height": 900,
+		"showDevTools": true,
+		"preventScreensaver": true
+	},
+	"capture": {
+		"countdownLength": 3,
+		"content_dir": "../content"
+	}
+}
