@@ -1,16 +1,15 @@
-"use strict";
+const NodeWebcam = require("node-webcam");
 
 class Webcam {
   constructor() {}
 
-  list_cameras() {
-    if (!navigator.mediaDevices) {
-      throw new Error("The MediaDevices API is not supported.");
-    }
-
-    return navigator.mediaDevices.getUserMedia({
-      video: true
+  list_cameras(callback) {
+    console.log('start');
+    NodeWebcam.capture("test_picture", {}, function (err, data) {
+      console.log('callback');
+      callback(err, data);
     });
+    console.log('end');
   }
 }
 

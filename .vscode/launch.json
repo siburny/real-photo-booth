@@ -8,6 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
+      "outputCapture": "std",
       "runtimeExecutable": "${workspaceRoot}\\node_modules\\.bin\\electron.cmd",
       "args": [
         "."

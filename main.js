@@ -1,5 +1,3 @@
-"use strict";
-
 const {
   app,
   BrowserWindow,
@@ -43,5 +41,8 @@ const Webcam = require('./include/js/camera/webcam');
 let w = new Webcam();
 
 ipc.on('check', function (event, arg) {
-  return w.list_cameras();
+  w.list_cameras(function (err, data) {
+    event.sender.send('checkDone', data);
+  });
 })
+
