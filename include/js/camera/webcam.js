@@ -1,15 +1,15 @@
-const NodeWebcam = require("node-webcam");
+const config = require('../config')
 
 class Webcam {
-  constructor() {}
+  constructor() {
+    const NodeWebcam = require("node-webcam");
+    this.camera = NodeWebcam.create({});
+  }
 
-  list_cameras(callback) {
-    console.log('start');
-    NodeWebcam.capture("test_picture", {}, function (err, data) {
-      console.log('callback');
+  capture(filename, callback) {
+    this.camera.capture(filename, function (err, data) {
       callback(err, data);
     });
-    console.log('end');
   }
 }
 

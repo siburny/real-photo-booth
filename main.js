@@ -9,14 +9,15 @@ let mainWindow;
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600
+    height: 480,
+    frame: false
   })
-  mainWindow.maximize();
+  //mainWindow.maximize();
 
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
@@ -37,12 +38,10 @@ app.on('activate', function () {
   }
 })
 
-const Webcam = require('./include/js/camera/webcam');
-let w = new Webcam();
+const camera = require('./include/js/camera');
 
 ipc.on('check', function (event, arg) {
-  w.list_cameras(function (err, data) {
+  camera.capture('sample', function (err, data) {
     event.sender.send('checkDone', data);
-  });
-})
-
+  })
+});
