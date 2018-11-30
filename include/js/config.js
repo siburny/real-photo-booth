@@ -1,6 +1,7 @@
 const electron = require('electron');
 const path = require('path');
 const fs = require('fs');
+const _ = require('lodash');
 
 const defaults = {
   "startup": {
@@ -12,6 +13,10 @@ const defaults = {
     "camera": "webcam",
     "countdownLength": 3,
     "content_dir": "photobooth"
+  },
+  "design": {
+    "frames": 3,
+    "delay": 3
   }
 }
 
@@ -20,6 +25,7 @@ class Config {
     this.userDataPath = (electron.app || electron.remote.app).getPath('userData');
     this.configPath = path.join(this.userDataPath, 'config.json');
     this.data = parseDataFile(this.configPath);
+    console.log('Configuration loaded: ' + this.configPath);
   }
 
   get(key) {
@@ -46,7 +52,7 @@ class Config {
 function parseDataFile(filePath) {
   try {
     let data = {};
-    Object.assign(data, defaults, JSON.parse(fs.readFileSync(filePath)));
+    _.merge(data, defaults, JSON.parse(fs.readFileSync(filePath)));
     return data;
   } catch (error) {
     return defaults;
