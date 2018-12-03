@@ -7,5 +7,5 @@ module.exports = {
     camera.capture(filepath, function (err, data) {
       callback(err, data);
     });
-  }
+  },
 };

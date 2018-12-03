@@ -84,7 +84,7 @@ a {
 
 .enlarge {
   animation: enlarge 1s;
-  animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  animation-timing-function: cubic-bezier(0.895, 0.03, 0.685, 0.22);
   animation-fill-mode: forwards;
 }
 
@@ -115,7 +115,7 @@ a {
   }
 
   to {
-    font-size: 80vh;
+    font-size: 40vh;
     opacity: 0;
   }
 }

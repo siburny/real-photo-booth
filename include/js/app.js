@@ -4,9 +4,12 @@ const moment = require('moment');
 const config = require('./config');
 const path = require('path');
 const fs = require('fs');
+const gm = require('gm').subClass({
+  imageMagick: true,
+  appPath: config.get('startup/convert'),
+});
 
 const delay = (t, v) => new Promise(resolve => setTimeout(resolve.bind(null, v), t));
-Promise.prototype.delay = delay;
 
 class App {
   constructor() {
@@ -14,13 +17,6 @@ class App {
     $('#startPhotoBooth').on('click', function () {
       that.start();
     });
-
-    // const gm = require('gm').subClass({imageMagick: true});
-    /* ipc.on('checkDone', function (event, arg) {
-      alert(arg);
-    })
-      ipc.send('check');
-     */
   }
 
   start() {
@@ -28,6 +24,7 @@ class App {
     this.frameDelay = config.get('design/delay');
 
     this.id = moment(new Date()).format('YYYYMMDDHHmmss');
+    this.id = '20181202203204';
     this.path = path.join(config.userDataPath, config.get('capture/content_dir'), this.id);
 
     if (!fs.existsSync(this.path)) {
@@ -41,18 +38,45 @@ class App {
     $('#step1 #text1, #step1 #text2, #step1 #text3, #step1 #text4, #step1 #text5').hide();
     $('#step1').addClass('fadein').show();
 
-    const frames = [];
-    this.captureFrame(1)
-      .then((filename) => {
-        frames.push(filename);
-        return this.captureFrame(2);
+    var frames = [
+      path.join(this.path, 'frame1.bmp'),
+      path.join(this.path, 'frame2.bmp'),
+      path.join(this.path, 'frame3.bmp'),
+    ];
+    delay(10)
+      /*       .then((res) => {
+              frames.push(res);
+              return this.captureFrame(1);
+            })
+            .then((res) => {
+              frames.push(res);
+              return this.captureFrame(2);
+            })
+            .then((res) => {
+              frames.push(res);
+              return this.captureFrame(3);
+            })
+       */
+      .then(() => {
+        gm()
+          .in(path.resolve(config.get('design/background')))
+          .in(frames[0])
+          .in('-geometry', '+0+300')
+          .in('-composite')
+          .in(frames[1])
+          .in('-geometry', '+0+700')
+          .in('-composite')
+          .in(frames[1])
+          .in('-geometry', '+0+1100')
+          .in('-composite')
+          .flatten()
+
+          .write(path.join(this.path, 'final.jpg'), function (err) {
+            if (!err) console.log('Final saved');
+          });
       })
-      .then((filename) => {
-        frames.push(filename);
-        return this.captureFrame(3);
-      })
-      .then((filename) => {
-        frames.push(filename);
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -83,15 +107,18 @@ class App {
         $('#step1 #text4').removeClass('enlarge').hide();
         $('#step1 #text5').addClass('fadein').show();
 
-        ipc.on('camera-capture-done', function (event, arg) {
-          $('#step1 #text5').removeClass('fadein').hide();
-          if (arg) {
-            return arg;
-          }
+        return new Promise(resolve => {
+          ipc.on('camera-capture-done', function (event, result) {
+            $('#step1 #text5').removeClass('fadein').hide();
+            if (result) {
+              resolve(result);
+              return;
+            }
 
-          throw new Error('Empty file name');
+            throw new Error('Empty file name');
+          });
+          ipc.send('camera-capture', path.join(this.path, 'frame' + i));
         });
-        ipc.send('camera-capture', path.join(this.path, 'frame' + i));
       });
   }
 }
