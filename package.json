@@ -8,6 +8,10 @@
   },
   "author": "Maxim Rubis",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/siburny/real-photo-booth.git"
+  },
   "devDependencies": {
     "electron": "^3.0.10",
     "electron-installer-zip": "^0.1.2",
