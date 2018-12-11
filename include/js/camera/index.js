@@ -1,6 +1,6 @@
-const Webcam = require('./webcam');
+const CameraSource = require('./d7000');
 
-const camera = new Webcam();
+const camera = new CameraSource();
 
 module.exports = {
   capture: function (filepath, callback) {

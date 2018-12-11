@@ -47,11 +47,11 @@ class Config {
       this.data[key] = val;
     }
 
-    fs.writeFileSync(this.configPath, JSON.stringify(this.data));
+    this.save();
   }
 
   save() {
-    fs.writeFileSync(this.configPath, JSON.stringify(this.data));
+    fs.writeFileSync(this.configPath, JSON.stringify(this.data, null, 2));
   }
 
   static parseDataFile(filePath) {
