@@ -1,12 +1,12 @@
 body {
   margin: 0;
   padding: 0;
-  color: #ed1996;
+  color: #006CB6;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 a {
-  color: #ed1996;
+  color: #006CB6;
 }
 
 #loading {
@@ -21,16 +21,24 @@ a {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
+#startPhotoBooth {
+  width: 80%;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #startPhotoBooth img {
-  height: 80vh;
+  max-width: 100%;
 }
 
 #startPhotoBooth span {
-  font-size: 15vh;
+  font-size: 10vh;
   font-weight: bold;
   display: inline-block;
-  margin-top: 0%;
-  margin-top: -5%;
+  margin-top: 0.5em;
 }
 
 #app,
