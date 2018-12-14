@@ -1,4 +1,4 @@
-const CameraSource = require('./webcam');
+const CameraSource = require('./d7000');
 
 const camera = new CameraSource();
 

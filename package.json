@@ -4,7 +4,9 @@
   "description": "Real photo booth software",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite",
+    "zip": "electron-installer-zip ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/real-photo-booth-%npm_package_version%.zip"
   },
   "author": "Maxim Rubis",
   "license": "MIT",

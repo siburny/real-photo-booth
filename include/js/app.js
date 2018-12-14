@@ -80,9 +80,9 @@ class App {
         $('#step1 #text6').addClass('fadein').show();
 
         let image = gm(config.get('design/width'), config.get('design/height'));
-        image = image.in(path.resolve(config.get('design/background')))
-          .in('-stroke', 'red')
-          .in('-fill', 'none');
+        image = image.in(path.resolve(config.get('design/background')));
+        // .in('-stroke', 'red')
+        // .in('-fill', 'none');
         // .in('-draw', 'rectangle 0,0,599,1799')
         // .in('-draw', 'rectangle 600,0,1199,1799')
 
@@ -125,24 +125,24 @@ class App {
     $('#frameNumber').text('Frame #' + i);
     $('#step1 #text1').addClass('fadein').show();
 
-    return delay(3000)
+    return delay(1500)
       .then(() => {
         $('#step1 #text1').removeClass('fadein').hide();
         $('#step1 #text2').addClass('enlarge').show();
 
-        return delay(1000);
+        return delay(300);
       })
       .then(() => {
         $('#step1 #text2').removeClass('enlarge').hide();
         $('#step1 #text3').addClass('enlarge').show();
 
-        return delay(1000);
+        return delay(300);
       })
       .then(() => {
         $('#step1 #text3').removeClass('enlarge').hide();
         $('#step1 #text4').addClass('enlarge').show();
 
-        return delay(1000);
+        return delay(300);
       })
       .then(() => {
         $('#step1 #text4').removeClass('enlarge').hide();
