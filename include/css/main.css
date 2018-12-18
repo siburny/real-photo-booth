@@ -1,12 +1,12 @@
 body {
   margin: 0;
   padding: 0;
-  color: #006CB6;
+  color: #ed1996;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 a {
-  color: #006CB6;
+  color: #ed1996;
 }
 
 #loading {
@@ -38,7 +38,7 @@ a {
   font-size: 10vh;
   font-weight: bold;
   display: inline-block;
-  margin-top: 0.5em;
+  margin-top: 0.1em;
 }
 
 #app,

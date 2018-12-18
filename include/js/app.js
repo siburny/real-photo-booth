@@ -10,6 +10,7 @@ const gm = require('gm').subClass({
 });
 
 const delay = (t, v) => new Promise(resolve => setTimeout(resolve.bind(null, v), t));
+const DEBUG_BORDER = false;
 
 class App {
   constructor() {
@@ -42,7 +43,7 @@ class App {
     this.id = moment(new Date()).format('YYYYMMDDHHmmss');
 
     // DEBUG
-    // this.id = '20181202203204';
+    this.id = '20181218092336';
 
     this.path = path.join(config.userDataPath, config.get('capture/content_dir'), this.id);
 
@@ -59,12 +60,12 @@ class App {
 
     var frames = [
       // DEBUG
-      // path.join(this.path, 'frame1.bmp'),
-      // path.join(this.path, 'frame2.bmp'),
-      // path.join(this.path, 'frame3.bmp'),
+      path.join(this.path, 'frame1.bmp'),
+      path.join(this.path, 'frame2.bmp'),
+      path.join(this.path, 'frame3.bmp'),
     ];
     delay(10)
-      .then(() => {
+      /*.then(() => {
         return this.captureFrame(1);
       })
       .then((res) => {
@@ -74,25 +75,49 @@ class App {
       .then((res) => {
         frames.push(res);
         return this.captureFrame(3);
-      })
+      })*/
       .then((res) => {
         frames.push(res);
         $('#step1 #text6').addClass('fadein').show();
 
         let image = gm(config.get('design/width'), config.get('design/height'));
         image = image.in(path.resolve(config.get('design/background')));
-        // .in('-stroke', 'red')
-        // .in('-fill', 'none');
-        // .in('-draw', 'rectangle 0,0,599,1799')
-        // .in('-draw', 'rectangle 600,0,1199,1799')
+
+        if (DEBUG_BORDER) {
+          image = image.in('-stroke', 'red')
+            .in('-fill', 'none');
+          for (let width = 0; width < 50; width += 10) {
+            image = image.in('-draw', 'rectangle ' + (0 + width) + ','
+                + (0 + width) + ',' + (599 - width) + ',' + (1799 - width))
+              .in('-draw', 'rectangle ' + (600 + width) + ',' + (0 + width) + ',' + (1199 - width) + ','
+                + (1799 - width));
+          }
+        }
 
         const template = config.get('design');
+
+        if (DEBUG_BORDER) {
+          image = image.in('-stroke', 'blue')
+            .in('-fill', 'none')
+            .in('-strokewidth', '10');
+          for (let i = 0; i < template.frames.length; i++) {
+            let frame = template.frames[i];
+            image = image.in('-draw', 'rectangle ' + (frame.x - 1 + frame.padding) + ',' + (frame.y - 1 + frame.padding)
+              + ',' + (frame.x + frame.width - frame.padding)
+              + ',' + (frame.y + frame.height - frame.padding));
+          }
+        }
+
         for (let i = 0; i < template.frames.length; i++) {
           let frame = template.frames[i];
-          image = image.in(frames[frame.index])
-            .in('-geometry', '' + (frame.width - 2 * frame.padding) + 'x' + (frame.height - 2 * frame.padding)
-              + '+' + (frame.x + frame.padding) + '+' + (frame.y + frame.padding))
-            .in('-composite');
+          image = image
+            .in('(')
+            .in('-gravity', 'center')
+            .in(frames[frame.index])
+            .in('-resize', '' + (frame.width - 2 * frame.padding) + 'x' + (frame.height - 2 * frame.padding) + '^')
+            .in('-crop', '' + (frame.width - 2 * frame.padding) + 'x' + (frame.height - 2 * frame.padding) + '+0+0')
+            .in('-repage', '+' + (frame.x + frame.padding) + '+' + (frame.y + frame.padding))
+            .in(')');
         }
 
         const finalImage = path.join(this.path, 'final.jpg');
@@ -125,24 +150,24 @@ class App {
     $('#frameNumber').text('Frame #' + i);
     $('#step1 #text1').addClass('fadein').show();
 
-    return delay(1500)
+    return delay(2000)
       .then(() => {
         $('#step1 #text1').removeClass('fadein').hide();
         $('#step1 #text2').addClass('enlarge').show();
 
-        return delay(300);
+        return delay(1000);
       })
       .then(() => {
         $('#step1 #text2').removeClass('enlarge').hide();
         $('#step1 #text3').addClass('enlarge').show();
 
-        return delay(300);
+        return delay(1000);
       })
       .then(() => {
         $('#step1 #text3').removeClass('enlarge').hide();
         $('#step1 #text4').addClass('enlarge').show();
 
-        return delay(300);
+        return delay(700);
       })
       .then(() => {
         $('#step1 #text4').removeClass('enlarge').hide();
