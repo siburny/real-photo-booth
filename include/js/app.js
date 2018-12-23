@@ -84,20 +84,21 @@ class App {
         image = image.in(path.resolve(config.get('design/background')));
 
         if (DEBUG_BORDER) {
-          image = image.in('-stroke', 'red')
-            .in('-fill', 'none');
           for (let width = 0; width < 50; width += 10) {
+            image = image.in('-stroke', 'red').in('-fill', 'none');
             image = image.in('-draw', 'rectangle ' + (0 + width) + ','
-                + (0 + width) + ',' + (599 - width) + ',' + (1799 - width))
-              .in('-draw', 'rectangle ' + (600 + width) + ',' + (0 + width) + ',' + (1199 - width) + ','
-                + (1799 - width));
+              + (0 + width) + ',' + (599 - width) + ',' + (1799 - width));
+
+            image = image.in('-stroke', 'blue').in('-fill', 'none');
+            image = image.in('-draw', 'rectangle ' + (600 + width) + ',' + (0 + width) + ',' + (1199 - width) + ','
+              + (1799 - width));
           }
         }
 
         const template = config.get('design');
 
         if (DEBUG_BORDER) {
-          image = image.in('-stroke', 'blue')
+          image = image.in('-stroke', 'green')
             .in('-fill', 'none')
             .in('-strokewidth', '10');
           for (let i = 0; i < template.frames.length; i++) {
