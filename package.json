@@ -1,11 +1,11 @@
 {
   "name": "real-photo-booth",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Real photo booth software",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite",
+    "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite --ignore distribute",
     "zip": "electron-installer-zip ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/real-photo-booth-%npm_package_version%.zip"
   },
   "author": "Maxim Rubis",
@@ -25,10 +25,10 @@
   "dependencies": {
     "font-awesome": "^4.7.0",
     "gm": "^1.23.1",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.1",
     "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
-    "moment": "^2.22.2"
+    "moment": "^2.24.0"
   },
   "optionalDependencies": {
     "node-webcam": "^0.4.5"

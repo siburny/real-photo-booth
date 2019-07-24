@@ -4,6 +4,7 @@ const {
   ipcMain: ipc,
 } = require('electron');
 
+const config = require('./include/js/config');
 let mainWindow;
 
 function createWindow() {
@@ -12,12 +13,13 @@ function createWindow() {
     height: 480,
     frame: false,
   });
-  mainWindow.maximize();
+  mainWindow.setFullScreen(true);
 
   mainWindow.loadFile('index.html');
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (config.get('startup/showDevTools')) {
+    mainWindow.webContents.openDevTools();
+  }
 
   mainWindow.on('closed', function () {
     mainWindow = null;

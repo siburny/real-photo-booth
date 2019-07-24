@@ -43,7 +43,7 @@ class App {
     this.id = moment(new Date()).format('YYYYMMDDHHmmss');
 
     // DEBUG
-    this.id = '20181218092336';
+    // this.id = '20181218092336';
 
     this.path = path.join(config.userDataPath, config.get('capture/content_dir'), this.id);
 
@@ -60,12 +60,12 @@ class App {
 
     var frames = [
       // DEBUG
-      path.join(this.path, 'frame1.bmp'),
-      path.join(this.path, 'frame2.bmp'),
-      path.join(this.path, 'frame3.bmp'),
+      // path.join(this.path, 'frame1.bmp'),
+      // path.join(this.path, 'frame2.bmp'),
+      // path.join(this.path, 'frame3.bmp'),
     ];
-    delay(10)
-      /*.then(() => {
+    delay(10) // DEBUG
+      .then(() => {
         return this.captureFrame(1);
       })
       .then((res) => {
@@ -75,13 +75,13 @@ class App {
       .then((res) => {
         frames.push(res);
         return this.captureFrame(3);
-      })*/
+      })
       .then((res) => {
         frames.push(res);
         $('#step1 #text6').addClass('fadein').show();
 
         let image = gm(config.get('design/width'), config.get('design/height'));
-        image = image.in(path.resolve(config.get('design/background')));
+        image = image.in(path.resolve(__dirname, '../..', config.get('design/background')));
 
         if (DEBUG_BORDER) {
           for (let width = 0; width < 50; width += 10) {
