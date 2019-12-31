@@ -39,6 +39,16 @@ class Config {
     return this.data[key];
   }
 
+  getDefault(key, defaultValue) {
+    let ret = this.get(key);
+    if (typeof (ret) === 'undefined') {
+      this.set(key, defaultValue);
+      return defaultValue;
+    }
+
+    return ret;
+  }
+
   set(key, val) {
     if (key.indexOf('/') !== -1) {
       key = key.split('/');

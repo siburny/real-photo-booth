@@ -1,15 +1,30 @@
+const EXEC = require('child_process').exec;
+const Path = require('path');
+const fs = require('fs');
+
 class Webcam {
   constructor() {
-    const NodeWebcam = require('node-webcam');
-    this.camera = NodeWebcam.create({
-      width: 1280,
-      height: 720,
-    });
+    this.BIN = Path.resolve(__dirname, 'RobotEyez.exe') + ' /bmp';
   }
 
   capture(filename, callback) {
-    this.camera.capture(filename, function (err, data) {
-      callback(err, data);
+    EXEC(this.BIN, {
+      cwd: __dirname
+    }, function (err) {
+      if (err) {
+        if (callback) {
+          callback(err);
+        }
+        return;
+      }
+
+      fs.rename(Path.resolve(__dirname, 'frame.bmp'), filename, (errRename) => {
+        if (errRename) {
+          return callback && callback(errRename);
+        }
+
+        return callback && callback(errRename, filename);
+      });
     });
   }
 }

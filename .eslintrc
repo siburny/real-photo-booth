@@ -22,6 +22,6 @@
       }
     ],
     "max-len": ["error", 120],
-    "comma-dangle": ["error", "always"]
+    "comma-dangle": ["error", "only-multiline"]
   }
 }

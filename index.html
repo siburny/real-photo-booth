@@ -6,19 +6,28 @@
   <title>Real Photo Booth</title>
 
   <link type="text/css" rel="stylesheet" href="./include/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css" />
 </head>
 
 <body>
 
+  <div id="lines" style="display: none;"></div>
+
+  <div id="spinner">
+    <div>
+      <i class="fa fa-cog fa-spin-slower fa-5x fa-fw"></i>
+    </div>
+  </div>
+
   <div style="text-align: center;">
     <a id="startPhotoBooth" href="#">
-      <img src="./include/images/logo.png" style="max-width: 40%;" /><br />
-      <span>TOUCH ME TO TAKE A PHOTO</span>
+      <img src="./include/images/logo-blackfires.png" style="max-width: 40%;" /><br />
+      <span>TOUCH ME<br/>TO TAKE A PHOTO</span>
     </a>
   </div>
 
   <div id="app">
-    <div id="step1">
+    <div id="main">
       <div style="width:20%;"></div>
       <div>
         <span id="text1"><span id="frameNumber">1</span><br />Ready?</span>
@@ -29,21 +38,34 @@
         <span id="text6">Printing ...</span>
       </div>
     </div>
-    <div id="admin">
-      qwe
-    </div>
-    <div id="step2"></div>
-    <div id="step3"></div>
   </div>
 
   <div id="loading" style="display: none;">
     <img src=" ./include/images/loading.svg" />
   </div>
 
-    <script>
-      require('./include/js/app.js');
+  <div id="admin">
+    <div id="close"><a href="#"><i class="fa fa-close"></i></a></div>
 
-    </script>
+    <ul id="admin_menu">
+      <li>
+        <a href="#" id="admin_menu_templates">
+          <i class="fa fa-image"></i><br/>Templates
+        </a>
+      </li>
+      <li>
+        <a href="#" id="admin_menu_preview">
+          <i class="fa fa-camera"></i><br/>Preview
+        </a>
+      </li>
+    </ul>
+
+    <div id="admin_dialog"></div>
+  </div>
+
+  <script>
+    require('./include/js/app.js');
+  </script>
 </body>
 
 </html>

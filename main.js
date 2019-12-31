@@ -12,6 +12,9 @@ function createWindow() {
     width: 800,
     height: 480,
     frame: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
   mainWindow.setFullScreen(true);
 

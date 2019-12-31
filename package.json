@@ -1,6 +1,6 @@
 {
   "name": "real-photo-booth",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Real photo booth software",
   "main": "main.js",
   "scripts": {
@@ -15,22 +15,20 @@
     "url": "https://github.com/siburny/real-photo-booth.git"
   },
   "devDependencies": {
-    "electron": "^3.0.10",
+    "electron": "^6.1.7",
     "electron-installer-zip": "^0.1.2",
-    "electron-packager": "^12.2.0",
-    "eslint": "^5.9.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0"
+    "electron-packager": "^14.1.1",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.19.1"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
     "gm": "^1.23.1",
+    "handlebars": "^4.5.3",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "mkdirp": "^0.5.1",
     "moment": "^2.24.0"
-  },
-  "optionalDependencies": {
-    "node-webcam": "^0.4.5"
   }
 }
