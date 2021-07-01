@@ -2,6 +2,7 @@ const $ = require('jquery');
 const ipc = require('electron').ipcRenderer;
 const moment = require('moment');
 const config = require('./config');
+const flash = require('./flash');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
@@ -141,6 +142,7 @@ class App {
       // path.join(this.path, 'frame2.bmp'),
       // path.join(this.path, 'frame3.bmp'),
     ];
+
     delay(10) // DEBUG
       .then(() => {
         return this.captureFrame(1);
@@ -252,7 +254,11 @@ class App {
     $('#frameNumber').text('Frame #' + i);
     $('#main #text1').addClass('fadein').show();
 
-    return delay(2000)
+    return delay(1000)
+      .then(() => {
+        flash.MakeFlash();
+        return delay(1000);
+      })
       .then(() => {
         $('#main #text1').removeClass('fadein').hide();
         $('#main #text2').addClass('enlarge').show();
