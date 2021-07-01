@@ -1,3 +1,5 @@
+'use strict';
+
 const $ = require('jquery');
 const ipc = require('electron').ipcRenderer;
 const moment = require('moment');

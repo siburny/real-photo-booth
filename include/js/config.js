@@ -1,3 +1,5 @@
+'use strict';
+
 const electron = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -23,7 +25,7 @@ const defaults = {
 
 class Config {
   constructor() {
-    this.userDataPath = (electron.app || electron.remote.app).getPath('userData');
+    this.userDataPath = (electron.app || require('@electron/remote').app).getPath('userData');
     this.configPath = path.join(this.userDataPath, 'config.json');
     this.data = Config.parseDataFile(this.configPath);
     console.log('Configuration loaded: ' + this.configPath);
