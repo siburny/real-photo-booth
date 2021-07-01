@@ -1,8 +1,12 @@
+'use strict';
+
 const {
   app,
   BrowserWindow,
   ipcMain: ipc,
 } = require('electron');
+
+require('@electron/remote/main').initialize();
 
 const config = require('./include/js/config');
 let mainWindow;
@@ -14,6 +18,8 @@ function createWindow() {
     frame: false,
     webPreferences: {
       nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
     },
   });
   mainWindow.setFullScreen(true);
