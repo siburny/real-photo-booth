@@ -16,10 +16,6 @@ const gm = require('gm').subClass({
 });
 
 const delay = (t, v) => new Promise(resolve => setTimeout(resolve.bind(null, v), t));
-const beeps = {
-  short: new Audio('./include/audio/short-beep.mp3'),
-  long: new Audio('./include/audio/long-beep.mp3'),
-};
 
 var DEBUG_BORDER = false;
 
@@ -264,31 +260,24 @@ class App {
       .then(() => {
         $('#main #text1').removeClass('fadein').hide();
         $('#main #text2').addClass('enlarge').show();
-        beeps.short.play();
 
         return delay(1000);
       })
       .then(() => {
         $('#main #text2').removeClass('enlarge').hide();
         $('#main #text3').addClass('enlarge').show();
-        beeps.short.play();
 
         return delay(1000);
       })
       .then(() => {
         $('#main #text3').removeClass('enlarge').hide();
         $('#main #text4').addClass('enlarge').show();
-        beeps.short.play();
 
         return delay(700);
       })
       .then(() => {
         $('#main #text4').removeClass('enlarge').hide();
         $('#main #text5').addClass('fadein').show();
-
-        setTimeout(() => {
-          beeps.long.play();
-        }, 300);
 
         return new Promise(resolve => {
           ipc.on('camera-capture-done', function (event, result) {
