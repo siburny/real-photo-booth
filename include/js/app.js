@@ -162,7 +162,10 @@ class App {
       .then((finalImage) => {
         App.print(finalImage);
 
-        return delay(5000);
+        return delay(15000);
+      })
+      .then(() => {
+        $('#app').hide();
       })
       .catch((err) => {
         console.log(err);
@@ -231,7 +234,6 @@ class App {
           }
 
           console.log('Final image saved: ' + finalImage);
-          $('#app').hide();
 
           resolve(finalImage);
         });

@@ -1,3 +1,5 @@
+'use strict';
+
 const SerialPort = require('serialport');
 
 class Flash {
