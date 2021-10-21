@@ -15,16 +15,16 @@
     "url": "https://github.com/siburny/real-photo-booth.git"
   },
   "devDependencies": {
-    "electron": "^14.0.0",
+    "electron": "^13.6.0",
     "electron-installer-zip": "^0.1.2",
-    "electron-packager": "^15.3.0",
+    "electron-packager": "^15.4.0",
     "electron-rebuild": "^3.2.3",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.24.2"
+    "eslint-plugin-import": "^2.25.2"
   },
   "dependencies": {
-    "@electron/remote": "^1.2.1",
+    "@electron/remote": "^1.2.2",
     "font-awesome": "^4.7.0",
     "gm": "^1.23.1",
     "handlebars": "^4.7.7",
@@ -32,6 +32,6 @@
     "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
     "moment": "^2.29.1",
-    "serialport": "^9.0.7"
+    "serialport": "^9.2.4"
   }
 }
