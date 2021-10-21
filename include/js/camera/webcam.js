@@ -1,29 +1,42 @@
-const EXEC = require('child_process').exec;
+'use strict';
+
+const spawn = require('child_process').spawn;
 const Path = require('path');
-const fs = require('fs');
 
 class Webcam {
   constructor() {
-    this.BIN = Path.resolve(__dirname, 'RobotEyez.exe') + ' /bmp';
+    this.BIN = Path.resolve(__dirname, 'webcapture', 'webcamcapture.exe');
+
+    this.process = spawn(this.BIN, {
+      cwd: Path.resolve(__dirname, 'webcapture'),
+    });
+
+    this.process.on('close', (code) => {
+      console.log(`[WEBCAM CLOSE] exited with code ${code}`);
+    });
+
+    this.process.stderr.on('data', (data) => {
+      console.log('[WEBCAM ERR]', data.toString());
+    });
+
+    this.process.stdout.on('data', (data) => {
+      console.log('[WEBCAM]', data.toString());
+    });
   }
 
   capture(filename, callback) {
-    EXEC(this.BIN, {
-      cwd: __dirname
-    }, function (err) {
+    var thatP = this.process;
+    this.process.stdin.write(`shot ${filename}\r\n`, function (err) {
       if (err) {
         if (callback) {
           callback(err);
         }
+
         return;
       }
 
-      fs.rename(Path.resolve(__dirname, 'frame.bmp'), filename, (errRename) => {
-        if (errRename) {
-          return callback && callback(errRename);
-        }
-
-        return callback && callback(errRename, filename);
+      thatP.stdout.once('data', function (data) {
+        return callback && callback(undefined, data.toString().trim());
       });
     });
   }

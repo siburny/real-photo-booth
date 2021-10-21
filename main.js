@@ -1,10 +1,8 @@
 'use strict';
 
-const {
-  app,
-  BrowserWindow,
-  ipcMain: ipc,
-} = require('electron');
+const DEBUG = false;
+
+const { app, BrowserWindow, ipcMain: ipc } = require('electron');
 
 require('@electron/remote/main').initialize();
 
@@ -22,7 +20,8 @@ function createWindow() {
       enableRemoteModule: true,
     },
   });
-  mainWindow.setFullScreen(true);
+
+  mainWindow.setFullScreen(!DEBUG);
 
   mainWindow.loadFile('index.html');
 

@@ -13,6 +13,7 @@ body {
 
 a {
   color: var(--color);
+  fill: var(--color);
 }
 
 #loading {

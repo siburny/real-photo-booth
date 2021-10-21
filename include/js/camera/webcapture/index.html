@@ -1,0 +1,15 @@
+<html>
+<body>
+
+<img src="preview.jpg" style="border: 1px solid #ccc;" id="preview" />
+
+<script>
+	var image = document.getElementById("preview");
+	
+	setInterval(function() {
+		image.src = "preview.jpg?" + Math.random();
+	}, 1000);
+</script>
+
+</body>
+</html>

@@ -136,9 +136,9 @@ class App {
 
     var frames = [
       // DEBUG
-      // path.join(this.path, 'frame1.bmp'),
-      // path.join(this.path, 'frame2.bmp'),
-      // path.join(this.path, 'frame3.bmp'),
+      // path.join(this.path, 'frame1.jpg'),
+      // path.join(this.path, 'frame2.jpg'),
+      // path.join(this.path, 'frame3.jpg'),
     ];
 
     delay(10) // DEBUG
@@ -291,7 +291,7 @@ class App {
 
             throw new Error('Empty file name');
           });
-          ipc.send('camera-capture', path.join(this.path, 'frame' + i + '.bmp'));
+          ipc.send('camera-capture', path.join(this.path, 'frame' + i + '.jpg'));
         });
       });
   }
