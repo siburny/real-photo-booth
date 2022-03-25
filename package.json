@@ -15,7 +15,7 @@
     "url": "https://github.com/siburny/real-photo-booth.git"
   },
   "devDependencies": {
-    "electron": "^13.6.0",
+    "electron": "^13.6.6",
     "electron-installer-zip": "^0.1.2",
     "electron-packager": "^15.4.0",
     "electron-rebuild": "^3.2.3",
