@@ -1,14 +1,15 @@
 'use strict';
 
-const SerialPort = require('serialport');
+const { SerialPort } = require('serialport');
 
 class Flash {
   constructor() {
     this.ready = false;
     var that = this;
 
-    this.port = new SerialPort('COM5', {
-      baudRate: 57600
+    this.port = new SerialPort({
+      path: 'COM5',
+      baudRate: 57600,
     });
 
     this.port.open(function () {

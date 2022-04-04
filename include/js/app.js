@@ -1,21 +1,24 @@
 'use strict';
 
 const $ = require('jquery');
-const ipc = require('electron').ipcRenderer;
 const moment = require('moment');
-const config = require('./config');
+
+var config;
+(async () => {
+  try {
+    config = await require('./config').build();
+  } catch (e) {}
+})();
+
 const flash = require('./flash');
 const path = require('path');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
 const handlebars = require('handlebars');
-const gm = require('gm').subClass({
-  imageMagick: true,
-  appPath: config.get('startup/convert'),
-});
 
-const delay = (t, v) => new Promise(resolve => setTimeout(resolve.bind(null, v), t));
+const delay = (t, v) =>
+  new Promise((resolve) => setTimeout(resolve.bind(null, v), t));
 
 var DEBUG_BORDER = false;
 
@@ -34,16 +37,18 @@ class App {
       that.start();
     });
 
-    $('#startPhotoBooth').on('mousedown touchstart', function () {
-      longPress = false;
-      timeoutId = setTimeout(function () {
-        longPress = true;
-        $('#admin').removeClass('fadeout').addClass('fadein').show();
-        $('#admin_dialog').hide();
-      }, 3000);
-    }).on('mouseup mouseleave touchend touchcancel', function () {
-      clearTimeout(timeoutId);
-    });
+    $('#startPhotoBooth')
+      .on('mousedown touchstart', function () {
+        longPress = false;
+        timeoutId = setTimeout(function () {
+          longPress = true;
+          $('#admin').removeClass('fadeout').addClass('fadein').show();
+          $('#admin_dialog').hide();
+        }, 3000);
+      })
+      .on('mouseup mouseleave touchend touchcancel', function () {
+        clearTimeout(timeoutId);
+      });
 
     $('#admin #close').on('click', function () {
       $('#admin').removeClass('fadein').addClass('fadeout');
@@ -52,11 +57,15 @@ class App {
       }, 500);
     });
 
-    $('#admin_menu_preview').on('click', (function () {
-      this.id = moment(new Date()).format('YYYYMMDDHHmmss');
-      this.path = path.join(config.userDataPath, config.get('capture/content_dir'));
-      this.render(['', '', ''])
-        .then((finalPath) => {
+    $('#admin_menu_preview').on(
+      'click',
+      function () {
+        this.id = moment(new Date()).format('YYYYMMDDHHmmss');
+        this.path = path.join(
+          config.userDataPath,
+          config.get('capture/content_dir')
+        );
+        this.render(['', '', '']).then((finalPath) => {
           $('#admin_dialog').addClass('fadein').show();
 
           let img = new Image();
@@ -65,50 +74,66 @@ class App {
 
           $('#admin_dialog').html(img);
         });
-    }).bind(this));
+      }.bind(this)
+    );
 
     $('#admin_menu_templates').on('click', function () {
       $('#spinner').show();
-      fs.readFile(path.resolve(__dirname, '../templates/admin_templates.tpl'), 'utf-8', (err, data) => {
-        if (err) {
-          console.log('An error ocurred reading the file :' + err.message);
-          return;
+      fs.readFile(
+        path.resolve(__dirname, '../templates/admin_templates.tpl'),
+        'utf-8',
+        (err, data) => {
+          if (err) {
+            console.log('An error ocurred reading the file :' + err.message);
+            return;
+          }
+
+          var template = handlebars.compile(data);
+
+          var url = config.getDefault('startup/api_url', 'https://rub.is/');
+
+          $.getJSON(
+            url + '/wp-json/photobooth-assets/v1/get-templates/',
+            function (json) {
+              $('#admin_dialog').addClass('fadein').show();
+              $('#admin_dialog').html(template(json));
+            }
+          ).always(function () {
+            $('#spinner').hide();
+          });
         }
-
-        var template = handlebars.compile(data);
-
-        var url = config.getDefault('startup/api_url', 'https://rub.is/');
-
-        $.getJSON(url + '/wp-json/photobooth-assets/v1/get-templates/', function (json) {
-          $('#admin_dialog').addClass('fadein').show();
-          $('#admin_dialog').html(template(json));
-        }).always(function () {
-          $('#spinner').hide();
-        });
-      });
+      );
     });
 
     $('#admin_dialog').on('click', 'ul.templates a', function () {
       $('#spinner').show();
-      let templateFile = path.join(config.userDataPath, config.get('capture/content_dir'),
-        moment(new Date()).format('YYYYMMDDHHmmss') + '.png');
+      let templateFile = path.join(
+        config.userDataPath,
+        config.get('capture/content_dir'),
+        moment(new Date()).format('YYYYMMDDHHmmss') + '.png'
+      );
       var file = fs.createWriteStream(templateFile);
 
-      let client = $(this).children('img').attr('src').substring(0, 5) === 'https' ? https : http;
+      let client =
+        $(this).children('img').attr('src').substring(0, 5) === 'https'
+          ? https
+          : http;
 
-      client.get($(this).children('img').attr('src'), function (response) {
-        response.pipe(file);
-        file.on('finish', function () {
-          config.set('design/background', templateFile);
+      client
+        .get($(this).children('img').attr('src'), function (response) {
+          response.pipe(file);
+          file.on('finish', function () {
+            config.set('design/background', templateFile);
 
-          $('#admin_dialog').hide();
+            $('#admin_dialog').hide();
+            $('#spinner').hide();
+            file.close();
+          });
+        })
+        .on('error', function () {
           $('#spinner').hide();
-          file.close();
+          fs.unlink(templateFile);
         });
-      }).on('error', function () {
-        $('#spinner').hide();
-        fs.unlink(templateFile);
-      });
     });
   }
 
@@ -121,7 +146,11 @@ class App {
     // DEBUG
     // this.id = '20181218092336';
 
-    this.path = path.join(config.userDataPath, config.get('capture/content_dir'), this.id);
+    this.path = path.join(
+      config.userDataPath,
+      config.get('capture/content_dir'),
+      this.id
+    );
 
     if (!fs.existsSync(this.path)) {
       const mkdirp = require('mkdirp');
@@ -131,7 +160,9 @@ class App {
     $('#main').hide();
     $('#app').show();
 
-    $('#main #text1, #main #text2, #main #text3, #main #text4, #main #text5, #main #text6').hide();
+    $(
+      '#main #text1, #main #text2, #main #text3, #main #text4, #main #text5, #main #text6'
+    ).hide();
     $('#main').addClass('fadein').show();
 
     var frames = [
@@ -173,33 +204,66 @@ class App {
   }
 
   render(frames) {
+    const gm = require('gm').subClass({
+      imageMagick: true,
+      appPath: config.get('startup/convert'),
+    });
+
     let image = gm(config.get('design/width'), config.get('design/height'));
-    image = image.in(path.resolve(__dirname, '../..', config.get('design/background')));
+    image = image.in(
+      path.resolve(__dirname, '../..', config.get('design/background'))
+    );
 
     if (DEBUG_BORDER) {
       for (let width = 0; width < 50; width += 10) {
         image = image.in('-stroke', 'red').in('-fill', 'none');
-        image = image.in('-draw', 'rectangle ' + (0 + width) + ','
-          + (0 + width) + ',' + (599 - width) + ',' + (1799 - width));
+        image = image.in(
+          '-draw',
+          'rectangle ' +
+            (0 + width) +
+            ',' +
+            (0 + width) +
+            ',' +
+            (599 - width) +
+            ',' +
+            (1799 - width)
+        );
 
         image = image.in('-stroke', 'blue').in('-fill', 'none');
-        image = image.in('-draw', 'rectangle ' + (600 + width) + ',' + (0 + width) + ',' + (1199 - width) + ','
-          + (1799 - width));
+        image = image.in(
+          '-draw',
+          'rectangle ' +
+            (600 + width) +
+            ',' +
+            (0 + width) +
+            ',' +
+            (1199 - width) +
+            ',' +
+            (1799 - width)
+        );
       }
     }
 
     const template = config.get('design');
 
     if (DEBUG_BORDER) {
-      image = image.in('-stroke', 'green')
+      image = image
+        .in('-stroke', 'green')
         .in('-fill', 'none')
         .in('-strokewidth', '10');
       for (let i = 0; i < template.frames.length; i++) {
         let frame = template.frames[i];
-        image = image.in('-draw', 'rectangle ' + (frame.x - 1 + frame.padding) + ','
-          + (frame.y - 1 + frame.padding)
-          + ',' + (frame.x + frame.width - frame.padding)
-          + ',' + (frame.y + frame.height - frame.padding));
+        image = image.in(
+          '-draw',
+          'rectangle ' +
+            (frame.x - 1 + frame.padding) +
+            ',' +
+            (frame.y - 1 + frame.padding) +
+            ',' +
+            (frame.x + frame.width - frame.padding) +
+            ',' +
+            (frame.y + frame.height - frame.padding)
+        );
       }
     }
 
@@ -207,36 +271,59 @@ class App {
       let frame = template.frames[i];
 
       if (!frames[frame.index]) {
-        image = image.in('-draw', 'rectangle ' + (frame.x - 1 + frame.padding) + ','
-          + (frame.y - 1 + frame.padding)
-          + ',' + (frame.x + frame.width - frame.padding)
-          + ',' + (frame.y + frame.height - frame.padding));
+        image = image.in(
+          '-draw',
+          'rectangle ' +
+            (frame.x - 1 + frame.padding) +
+            ',' +
+            (frame.y - 1 + frame.padding) +
+            ',' +
+            (frame.x + frame.width - frame.padding) +
+            ',' +
+            (frame.y + frame.height - frame.padding)
+        );
       } else {
         image = image
           .in('(')
           .in('-gravity', 'center')
           .in(frames[frame.index])
-          .in('-resize', '' + (frame.width - 2 * frame.padding) + 'x' + (frame.height - 2 * frame.padding) + '^')
-          .in('-crop', '' + (frame.width - 2 * frame.padding) + 'x' + (frame.height - 2 * frame.padding) + '+0+0')
-          .in('-repage', '+' + (frame.x + frame.padding) + '+' + (frame.y + frame.padding))
+          .in(
+            '-resize',
+            '' +
+              (frame.width - 2 * frame.padding) +
+              'x' +
+              (frame.height - 2 * frame.padding) +
+              '^'
+          )
+          .in(
+            '-crop',
+            '' +
+              (frame.width - 2 * frame.padding) +
+              'x' +
+              (frame.height - 2 * frame.padding) +
+              '+0+0'
+          )
+          .in(
+            '-repage',
+            '+' + (frame.x + frame.padding) + '+' + (frame.y + frame.padding)
+          )
           .in(')');
       }
     }
 
     const finalImage = path.join(this.path, 'final.jpg');
     return new Promise((resolve, reject) => {
-      image.flatten()
-        .write(finalImage, function (err) {
-          if (err) {
-            console.log(err);
-            reject(err);
-            return;
-          }
+      image.flatten().write(finalImage, function (err) {
+        if (err) {
+          console.log(err);
+          reject(err);
+          return;
+        }
 
-          console.log('Final image saved: ' + finalImage);
+        console.log('Final image saved: ' + finalImage);
 
-          resolve(finalImage);
-        });
+        resolve(finalImage);
+      });
     });
   }
 
@@ -281,17 +368,30 @@ class App {
         $('#main #text4').removeClass('enlarge').hide();
         $('#main #text5').addClass('fadein').show();
 
-        return new Promise(resolve => {
-          ipc.on('camera-capture-done', function (event, result) {
-            $('#main #text5').removeClass('fadein').hide();
-            if (result) {
-              resolve(result);
-              return;
+        return new Promise(async (resolve) => {
+          await delay(1000);
+          $.get(
+            'http://localhost:9696/api/shot',
+            {
+              filename: path.join(this.path, 'frame' + i + '.jpg'),
+            },
+            async function (data) {
+              $('#main #text5').removeClass('fadein').hide();
+              await delay(1000);
+              resolve(data);
             }
-
-            throw new Error('Empty file name');
-          });
-          ipc.send('camera-capture', path.join(this.path, 'frame' + i + '.jpg'));
+          );
+          // ipc.on('camera-capture-done', function (event, result) {
+          //   $('#main #text5').removeClass('fadein').hide();
+          //   if (result) {
+          //     resolve(result);
+          //     return;
+          //   }
+          //   throw new Error('Empty file name');
+          // });
+          // ipc.send(
+          //   'camera-capture',
+          // );
         });
       });
   }

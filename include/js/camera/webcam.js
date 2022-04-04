@@ -6,9 +6,12 @@ const Path = require('path');
 class Webcam {
   constructor() {
     this.BIN = Path.resolve(__dirname, 'webcapture', 'webcamcapture.exe');
+  }
 
-    this.process = spawn(this.BIN, {
+  start() {
+    this.process = spawn(this.BIN, ['0'], {
       cwd: Path.resolve(__dirname, 'webcapture'),
+      windowsHide: false,
     });
 
     this.process.on('close', (code) => {
@@ -17,27 +20,6 @@ class Webcam {
 
     this.process.stderr.on('data', (data) => {
       console.log('[WEBCAM ERR]', data.toString());
-    });
-
-    this.process.stdout.on('data', (data) => {
-      console.log('[WEBCAM]', data.toString());
-    });
-  }
-
-  capture(filename, callback) {
-    var thatP = this.process;
-    this.process.stdin.write(`shot ${filename}\r\n`, function (err) {
-      if (err) {
-        if (callback) {
-          callback(err);
-        }
-
-        return;
-      }
-
-      thatP.stdout.once('data', function (data) {
-        return callback && callback(undefined, data.toString().trim());
-      });
     });
   }
 }

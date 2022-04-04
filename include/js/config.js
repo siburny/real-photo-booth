@@ -1,6 +1,6 @@
 'use strict';
 
-const electron = require('electron');
+const { ipcRenderer } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const _ = require('lodash');
@@ -24,12 +24,31 @@ const defaults = {
 };
 
 class Config {
-  constructor() {
-    this.userDataPath = (electron.app || require('@electron/remote').app).getPath('userData');
+  constructor(userDataPath) {
+    if(userDataPath == "") {
+      throw new Error('userDataPath is not defined.');
+    }
+
+    this.userDataPath = userDataPath;
     this.configPath = path.join(this.userDataPath, 'config.json');
     this.data = Config.parseDataFile(this.configPath);
     console.log('Configuration loaded: ' + this.configPath);
     this.save();
+  }
+
+  static async build(_path) {
+    let userDataPath = await Config.getUserDataPath();
+
+    return new Config(userDataPath);
+  }
+
+  static async getUserDataPath() {
+    return new Promise((resolve) => {
+      ipcRenderer.invoke('get-user-path').then((result) => {
+        console.log(result);
+        resolve(result);
+      });
+    });
   }
 
   get(key) {
@@ -43,7 +62,7 @@ class Config {
 
   getDefault(key, defaultValue) {
     let ret = this.get(key);
-    if (typeof (ret) === 'undefined') {
+    if (typeof ret === 'undefined') {
       this.set(key, defaultValue);
       return defaultValue;
     }
@@ -78,4 +97,4 @@ class Config {
   }
 }
 
-module.exports = new Config();
+module.exports = Config;

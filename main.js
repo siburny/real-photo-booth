@@ -1,23 +1,27 @@
 'use strict';
 
-const DEBUG = false;
+const DEBUG = true;
 
-const { app, BrowserWindow, ipcMain: ipc } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 
-require('@electron/remote/main').initialize();
+ipcMain.handle('get-user-path', function () {
+  return app.getPath('userData');
+});
 
-const config = require('./include/js/config');
+const Config = require('./include/js/config');
+const config = new Config(app.getPath('userData'));
 let mainWindow;
+
+require('./include/js/camera');
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 480,
+    width: 1200,
+    height: 800,
     frame: false,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
     },
   });
 
@@ -48,12 +52,4 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
   }
-});
-
-const camera = require('./include/js/camera');
-
-ipc.on('camera-capture', function (event, arg) {
-  camera.capture(arg, function (err, data) {
-    event.sender.send('camera-capture-done', data);
-  });
 });
