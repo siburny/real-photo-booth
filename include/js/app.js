@@ -343,10 +343,10 @@ class App {
 
     return delay(3000)
       .then(() => {
-        flash.MakeFlash();
         return delay(1000);
       })
       .then(() => {
+        flash.MakeFlash();
         $('#main #text1').removeClass('fadein').hide();
         $('#main #text2').addClass('enlarge').show();
 
@@ -371,7 +371,6 @@ class App {
         return delay(1000);
       })
       .then(() => {
-
         return new Promise(async (resolve) => {
           $.get(
             'http://localhost:9696/api/shot',
