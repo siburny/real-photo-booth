@@ -341,7 +341,7 @@ class App {
     $('#frameNumber').text('Frame #' + i);
     $('#main #text1').addClass('fadein').show();
 
-    return delay(1000)
+    return delay(3000)
       .then(() => {
         flash.MakeFlash();
         return delay(1000);
@@ -362,36 +362,28 @@ class App {
         $('#main #text3').removeClass('enlarge').hide();
         $('#main #text4').addClass('enlarge').show();
 
-        return delay(700);
+        return delay(1000);
       })
       .then(() => {
         $('#main #text4').removeClass('enlarge').hide();
         $('#main #text5').addClass('fadein').show();
 
+        return delay(1000);
+      })
+      .then(() => {
+
         return new Promise(async (resolve) => {
-          await delay(1000);
           $.get(
             'http://localhost:9696/api/shot',
             {
               filename: path.join(this.path, 'frame' + i + '.jpg'),
             },
             async function (data) {
+              //await delay(400);
               $('#main #text5').removeClass('fadein').hide();
-              await delay(1000);
               resolve(data);
             }
           );
-          // ipc.on('camera-capture-done', function (event, result) {
-          //   $('#main #text5').removeClass('fadein').hide();
-          //   if (result) {
-          //     resolve(result);
-          //     return;
-          //   }
-          //   throw new Error('Empty file name');
-          // });
-          // ipc.send(
-          //   'camera-capture',
-          // );
         });
       });
   }
