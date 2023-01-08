@@ -1,9 +1,10 @@
 name: Build/release
 
-on: 
-  push:
-    tags:
-      - 'v*'
+on: push
+# on: 
+#  push:
+#    tags:
+#      - 'v*'
 
 jobs:
   release:
@@ -18,9 +19,6 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Build/release Electron app
-        uses: samuelmeuli/action-electron-builder@v1.6.0
-        with:
-          build_script_name: skip-bulding
-          github_token: ${{ secrets.github_token }}
-          release: true
+      - run: npm run build 
+      
+      - run: npm run zip
