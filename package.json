@@ -1,6 +1,6 @@
 {
   "name": "real-photo-booth",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Real photo booth software",
   "main": "main.js",
   "scripts": {
