@@ -22,3 +22,8 @@ jobs:
       - run: npm ci
       - run: npm run build 
       - run: npm run zip
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{github.workspace}}/distribute/installers/*.zip
