@@ -22,9 +22,15 @@ class Flash {
     });
   }
 
-  MakeFlash() {
+  FlashStart() {
     if (this.ready) {
-      this.port.write('flash');
+      this.port.write('flashon');
+    }
+  }
+
+  FlashStop() {
+    if (this.ready) {
+      this.port.write('flashon');
     }
   }
 }

@@ -2,12 +2,13 @@
 
 const $ = require('jquery');
 const moment = require('moment');
+const mkdirp = require('mkdirp');
 
 var config;
 (async () => {
   try {
     config = await require('./config').build();
-  } catch (e) {}
+  } catch (e) { }
 })();
 
 const flash = require('./flash');
@@ -25,30 +26,25 @@ var DEBUG_BORDER = false;
 class App {
   constructor() {
     const that = this;
-    var timeoutId = 0;
-    let longPress;
 
     $('#spinner').hide();
 
     $('#startPhotoBooth').on('click', function () {
-      if (longPress) {
-        return;
-      }
       that.start();
     });
 
-    $('#startPhotoBooth')
-      .on('mousedown touchstart', function () {
-        longPress = false;
-        timeoutId = setTimeout(function () {
-          longPress = true;
-          $('#admin').removeClass('fadeout').addClass('fadein').show();
-          $('#admin_dialog').hide();
-        }, 3000);
-      })
-      .on('mouseup mouseleave touchend touchcancel', function () {
-        clearTimeout(timeoutId);
-      });
+    $('#startPhotoBoothAdmin').on('click', function () {
+      let pathContent = path.join(
+        config.userDataPath,
+        config.get('capture/content_dir'),
+      );
+      if (!fs.existsSync(pathContent)) {
+        mkdirp.sync(pathContent);
+      }
+
+      $('#admin').removeClass('fadeout').addClass('fadein').show();
+      $('#admin_dialog').hide();
+    });
 
     $('#admin #close').on('click', function () {
       $('#admin').removeClass('fadein').addClass('fadeout');
@@ -76,6 +72,38 @@ class App {
         });
       }.bind(this)
     );
+
+    $('#admin_menu_camera_capture').on(
+      'click',
+      function () {
+        this.id = moment(new Date()).format('YYYYMMDDHHmmss');
+        this.path = path.join(
+          config.userDataPath,
+          config.get('capture/content_dir')
+        );
+
+
+        $.get(
+          'http://localhost:9696/api/shot',
+          {
+            filename: path.join(this.path, 'frame_preview_' + this.id + '.jpg'),
+          },
+          async function (data) {
+            $('#admin_dialog').addClass('fadein').show();
+
+            let img = new Image();
+            img.src = data;
+            img.style = 'max-width:99%;max-height:99%;';
+
+            $('#admin_dialog').html(img);
+          }
+        );
+      }.bind(this)
+    );
+
+    $('#admin_menu_camera_settings').on('click', function () {
+      $.get('http://localhost:9696/api/settings');
+    });
 
     $('#admin_menu_templates').on('click', function () {
       $('#spinner').show();
@@ -107,6 +135,7 @@ class App {
 
     $('#admin_dialog').on('click', 'ul.templates a', function () {
       $('#spinner').show();
+
       let templateFile = path.join(
         config.userDataPath,
         config.get('capture/content_dir'),
@@ -220,26 +249,26 @@ class App {
         image = image.in(
           '-draw',
           'rectangle ' +
-            (0 + width) +
-            ',' +
-            (0 + width) +
-            ',' +
-            (599 - width) +
-            ',' +
-            (1799 - width)
+          (0 + width) +
+          ',' +
+          (0 + width) +
+          ',' +
+          (599 - width) +
+          ',' +
+          (1799 - width)
         );
 
         image = image.in('-stroke', 'blue').in('-fill', 'none');
         image = image.in(
           '-draw',
           'rectangle ' +
-            (600 + width) +
-            ',' +
-            (0 + width) +
-            ',' +
-            (1199 - width) +
-            ',' +
-            (1799 - width)
+          (600 + width) +
+          ',' +
+          (0 + width) +
+          ',' +
+          (1199 - width) +
+          ',' +
+          (1799 - width)
         );
       }
     }
@@ -256,13 +285,13 @@ class App {
         image = image.in(
           '-draw',
           'rectangle ' +
-            (frame.x - 1 + frame.padding) +
-            ',' +
-            (frame.y - 1 + frame.padding) +
-            ',' +
-            (frame.x + frame.width - frame.padding) +
-            ',' +
-            (frame.y + frame.height - frame.padding)
+          (frame.x - 1 + frame.padding) +
+          ',' +
+          (frame.y - 1 + frame.padding) +
+          ',' +
+          (frame.x + frame.width - frame.padding) +
+          ',' +
+          (frame.y + frame.height - frame.padding)
         );
       }
     }
@@ -274,13 +303,13 @@ class App {
         image = image.in(
           '-draw',
           'rectangle ' +
-            (frame.x - 1 + frame.padding) +
-            ',' +
-            (frame.y - 1 + frame.padding) +
-            ',' +
-            (frame.x + frame.width - frame.padding) +
-            ',' +
-            (frame.y + frame.height - frame.padding)
+          (frame.x - 1 + frame.padding) +
+          ',' +
+          (frame.y - 1 + frame.padding) +
+          ',' +
+          (frame.x + frame.width - frame.padding) +
+          ',' +
+          (frame.y + frame.height - frame.padding)
         );
       } else {
         image = image
@@ -290,18 +319,18 @@ class App {
           .in(
             '-resize',
             '' +
-              (frame.width - 2 * frame.padding) +
-              'x' +
-              (frame.height - 2 * frame.padding) +
-              '^'
+            (frame.width - 2 * frame.padding) +
+            'x' +
+            (frame.height - 2 * frame.padding) +
+            '^'
           )
           .in(
             '-crop',
             '' +
-              (frame.width - 2 * frame.padding) +
-              'x' +
-              (frame.height - 2 * frame.padding) +
-              '+0+0'
+            (frame.width - 2 * frame.padding) +
+            'x' +
+            (frame.height - 2 * frame.padding) +
+            '+0+0'
           )
           .in(
             '-repage',
@@ -338,15 +367,16 @@ class App {
   }
 
   captureFrame(i) {
+    flash.FlashStart();
+
     $('#frameNumber').text('Frame #' + i);
     $('#main #text1').addClass('fadein').show();
 
-    return delay(3000)
+    return delay(2000)
       .then(() => {
         return delay(1000);
       })
       .then(() => {
-        flash.MakeFlash();
         $('#main #text1').removeClass('fadein').hide();
         $('#main #text2').addClass('enlarge').show();
 
@@ -378,7 +408,7 @@ class App {
               filename: path.join(this.path, 'frame' + i + '.jpg'),
             },
             async function (data) {
-              //await delay(400);
+              flash.FlashStop();
               $('#main #text5').removeClass('fadein').hide();
               resolve(data);
             }

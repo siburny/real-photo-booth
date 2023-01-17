@@ -89,7 +89,11 @@
           }
         }
       },
+      "System.ValueTuple/4.5.0": {},
       "Unosquare.Swan.Lite/3.0.0": {
+        "dependencies": {
+          "System.ValueTuple": "4.5.0"
+        },
         "runtime": {
           "lib/netstandard2.0/Swan.Lite.dll": {
             "assemblyVersion": "3.0.0.0",
@@ -153,6 +157,13 @@
       "sha512": "sha512-/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
       "path": "system.runtime.compilerservices.unsafe/6.0.0",
       "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+    },
+    "System.ValueTuple/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ==",
+      "path": "system.valuetuple/4.5.0",
+      "hashPath": "system.valuetuple.4.5.0.nupkg.sha512"
     },
     "Unosquare.Swan.Lite/3.0.0": {
       "type": "package",

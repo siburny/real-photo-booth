@@ -1,7 +1,7 @@
 html {
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  --color: #ed1996;
+  --color: #006CB5;
 }
 
 body {
@@ -29,7 +29,7 @@ a {
 }
 
 #startPhotoBooth {
-  width: 80%;
+  width: 50%;
   display: block;
   position: absolute;
   top: 50%;
@@ -113,7 +113,7 @@ a {
 
 #admin ul#admin_menu li {
   display: inline-block;
-  width: 250px;
+  width: 300px;
   height: 250px;
   border: 1px solid var(--color);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -125,7 +125,7 @@ a {
   display: block;
   padding: 66px 0px;
   line-height: 1.5em;
-  font-size: 3vh;
+  font-size: 2.5vh;
   text-transform: uppercase;
 }
 
