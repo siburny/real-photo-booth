@@ -1,6 +1,6 @@
 {
   "name": "real-photo-booth",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Real photo booth software",
   "main": "main.js",
   "scripts": {
@@ -15,10 +15,10 @@
     "url": "https://github.com/siburny/real-photo-booth.git"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.2.3",
     "electron": "^22.0.0",
     "electron-installer-zip": "^0.1.2",
     "electron-packager": "^17.1.1",
-    "electron-rebuild": "^3.2.3",
     "eslint": "^8.12.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2"
@@ -29,7 +29,7 @@
     "handlebars": "^4.7.7",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
-    "mkdirp": "^1.0.4",
+    "mkdirp": "^2.1.1",
     "moment": "^2.29.1",
     "serialport": "^10.4.0"
   }
