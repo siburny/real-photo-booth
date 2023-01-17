@@ -30,7 +30,7 @@ class Flash {
 
   FlashStop() {
     if (this.ready) {
-      this.port.write('flashon');
+      this.port.write('flashoff');
     }
   }
 }
