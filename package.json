@@ -6,8 +6,7 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite --ignore distribute",
-    "zip-old": "electron-installer-zip ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/real-photo-booth-%npm_package_version%.zip",
-    "zip": "npm-build-zip --source=./distribute/real-photo-booth-windows-%npm_package_version% --destination=./distribute/installers/"
+    "zip": "zip-build ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/ --template=real-photo-booth-%npm_package_version%.zip"
   },
   "author": "Maxim Rubis",
   "license": "MIT",
@@ -22,7 +21,7 @@
     "eslint": "^8.12.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
-    "npm-build-zip": "^1.0.4"
+    "zip-build": "^1.8.0"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
