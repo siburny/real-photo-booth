@@ -1,7 +1,5 @@
 'use strict';
 
-const DEBUG = false;
-
 const { app, BrowserWindow, ipcMain } = require('electron');
 
 ipcMain.handle('get-user-path', function () {
@@ -25,7 +23,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.setFullScreen(!DEBUG);
+  mainWindow.setFullScreen(config.get('startup/fullscreen'));
 
   mainWindow.loadFile('index.html');
 

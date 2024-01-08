@@ -20,6 +20,11 @@ class Flash {
       console.log('Port is opened');
       that.ready = true;
     });
+
+    this.port.on('close', function () {
+      console.log('Port is closed');
+      that.ready = true;
+    });
   }
 
   FlashStart() {
