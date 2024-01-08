@@ -1,12 +1,13 @@
 {
   "name": "real-photo-booth",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Real photo booth software",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite --ignore distribute",
-    "zip": "electron-installer-zip ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/real-photo-booth-%npm_package_version%.zip"
+    "zip-old": "electron-installer-zip ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/real-photo-booth-%npm_package_version%.zip",
+    "zip": "npm-build-zip --source=./distribute/real-photo-booth-windows-%npm_package_version% --destination=./distribute/installers/"
   },
   "author": "Maxim Rubis",
   "license": "MIT",
@@ -16,12 +17,12 @@
   },
   "devDependencies": {
     "@electron/rebuild": "^3.2.3",
-    "electron": "^22.0.0",
-    "electron-installer-zip": "^0.1.2",
+    "electron": "^28.1.1",
     "electron-packager": "^17.1.1",
     "eslint": "^8.12.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.2"
+    "eslint-plugin-import": "^2.25.2",
+    "npm-build-zip": "^1.0.4"
   },
   "dependencies": {
     "font-awesome": "^4.7.0",
@@ -29,7 +30,7 @@
     "handlebars": "^4.7.7",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
-    "mkdirp": "^2.1.1",
+    "mkdirp": "^3.0.1",
     "moment": "^2.29.1",
     "serialport": "^12.0.0"
   }
