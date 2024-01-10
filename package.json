@@ -1,36 +1,37 @@
 {
-  "name": "real-photo-booth",
-  "version": "0.4.6",
-  "description": "Real photo booth software",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite --ignore distribute",
-    "zip": "zip-build ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/ --template=real-photo-booth-%npm_package_version%.zip"
-  },
-  "author": "Maxim Rubis",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/siburny/real-photo-booth.git"
-  },
-  "devDependencies": {
-    "@electron/rebuild": "^3.2.3",
-    "electron": "^28.1.1",
-    "electron-packager": "^17.1.1",
-    "eslint": "^8.12.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.2",
-    "zip-build": "^1.8.0"
-  },
-  "dependencies": {
-    "font-awesome": "^4.7.0",
-    "gm": "^1.23.1",
-    "handlebars": "^4.7.7",
-    "jquery": "^3.6.0",
-    "lodash": "^4.17.21",
-    "mkdirp": "^3.0.1",
-    "moment": "^2.29.1",
-    "serialport": "^12.0.0"
-  }
+    "name": "real-photo-booth",
+    "version": "0.4.6",
+    "description": "Real photo booth software",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite --ignore distribute",
+        "zip": "zip-build ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/ --template=real-photo-booth-%npm_package_version%.zip"
+    },
+    "author": "Maxim Rubis",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/siburny/real-photo-booth.git"
+    },
+    "devDependencies": {
+        "@electron/rebuild": "^3.2.3",
+        "electron": "^28.1.1",
+        "electron-packager": "^17.1.1",
+        "eslint": "^8.12.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.25.2",
+        "zip-build": "^1.8.0"
+    },
+    "dependencies": {
+        "eslint-config-prettier": "^9.1.0",
+        "font-awesome": "^4.7.0",
+        "gm": "^1.23.1",
+        "handlebars": "^4.7.7",
+        "jquery": "^3.6.0",
+        "lodash": "^4.17.21",
+        "mkdirp": "^3.0.1",
+        "moment": "^2.29.1",
+        "serialport": "^12.0.0"
+    }
 }

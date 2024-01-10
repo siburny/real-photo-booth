@@ -4,7 +4,7 @@
     "mocha": true,
     "es6": true
   },
-  "extends": "airbnb-base/legacy",
+  "extends": ["airbnb-base/legacy", "prettier"],
   "rules": {
     "semi": ["error", "always"],
     "quotes": ["error", "single"],
@@ -21,7 +21,14 @@
         "max": 1
       }
     ],
+    "implicit-arrow-linebreak": ["error", "below"],
     "max-len": ["error", 120],
     "comma-dangle": ["error", "only-multiline"]
-  }
+  },
+  "parserOptions": {
+    "ecmaVersion": 14
+  },
+  "ignorePatterns":[
+    "distribute"
+  ]
 }
