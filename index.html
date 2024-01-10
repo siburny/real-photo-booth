@@ -13,7 +13,7 @@
 
         <meta
             http-equiv="Content-Security-Policy"
-            content="default-src 'self'; script-src 'self' 'nonce-app-random-hash'; style-src 'self' 'unsafe-inline'"
+            content="default-src 'self'; script-src 'self' 'nonce-app-random-hash'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:9696"
         />
     </head>
 
@@ -108,7 +108,7 @@
                 </li>
                 <li>
                     <a href="#" id="admin_menu_restart">
-                        <i class="fa fa-eye"></i><br />Capture
+                        <i class="fa fa-refresh"></i><br />Restart
                     </a>
                 </li>
             </ul>

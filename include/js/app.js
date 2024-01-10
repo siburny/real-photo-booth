@@ -3,6 +3,7 @@
 const $ = require('jquery');
 const moment = require('moment');
 const mkdirp = require('mkdirp');
+const { ipcRenderer } = require('electron');
 
 var config;
 (async () => {
@@ -107,7 +108,9 @@ class App {
             }.bind(this)
         );
 
-        $('#admin_menu_restart').on('click');
+        $('#admin_menu_restart').on('click', function () {
+            ipcRenderer.send('admin-restart');
+        });
 
         $('#admin_menu_camera_settings').on('click', function () {
             $.get('http://localhost:9696/api/settings');
@@ -395,19 +398,19 @@ class App {
                 $('#main #text1').removeClass('fadein').hide();
                 $('#main #text2').addClass('enlarge').show();
 
-                return delay(1000);
+                return delay(750);
             })
             .then(() => {
                 $('#main #text2').removeClass('enlarge').hide();
                 $('#main #text3').addClass('enlarge').show();
 
-                return delay(1000);
+                return delay(750);
             })
             .then(() => {
                 $('#main #text3').removeClass('enlarge').hide();
                 $('#main #text4').addClass('enlarge').show();
 
-                return delay(1000);
+                return delay(750);
             })
             .then(() => {
                 $('#main #text4').removeClass('enlarge').hide();
