@@ -5,7 +5,7 @@
     "main": "main.js",
     "scripts": {
         "start": "electron .",
-        "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite --ignore distribute",
+        "build": "electron-packager ./ real-photo-booth-%npm_package_version% --platform win32 --arch x64 --out ./distribute/real-photo-booth-windows-%npm_package_version%/ --overwrite --ignore \"(\\.(eslintrc|editorconfig|github|vscode)|distribute)\"",
         "zip": "zip-build ./distribute/real-photo-booth-windows-%npm_package_version% ./distribute/installers/ --template=real-photo-booth-%npm_package_version%.zip"
     },
     "author": "Maxim Rubis",
