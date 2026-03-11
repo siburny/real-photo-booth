@@ -15,7 +15,7 @@
         "url": "https://github.com/siburny/real-photo-booth.git"
     },
     "devDependencies": {
-        "@electron/rebuild": "^3.2.3",
+        "@electron/rebuild": "^4.0.3",
         "electron": "^28.1.1",
         "electron-packager": "^17.1.1",
         "eslint": "^8.12.0",
